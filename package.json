@@ -1,0 +1,15 @@
+{
+  "name": "kid-joke-generator",
+  "version": "1.0.0",
+  "description": "bad kids joke generator",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "bluebird": "^3.5.0",
+    "tumblr.js": "^1.1.1"
+  }
+}
