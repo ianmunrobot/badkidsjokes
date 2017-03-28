@@ -1,13 +1,18 @@
 const nlp = require('compromise')
 const fs = require('fs')
 
-const texts = JSON.parse(fs.readFileSync('badjokes.json').toString());
+let jokes = JSON.parse(fs.readFileSync('badjokesSentences.json').toString()).jokes;
 
-let test = texts[208]
-  .replace(/<br\/>/g, '\n')
-  .replace(/<[/]*[\s\S]+?>/g, '')
-console.log(test)
-var text = nlp(test)
+jokes = jokes.map(joke => joke.replace('&ldquo;', '\"')
+  .replace('&rsquo;', '\'')
+  .replace('&hellip;', '...'))
 
-var nouns = text.nouns()
-console.log(nouns.out('array'))
+const Markov = require('markov-strings');
+
+const markov = new Markov(jokes, {
+  stateSize: 2,
+  maxWords: 30,
+});
+markov.buildCorpusSync();
+const result = markov.generateSentenceSync();
+console.log(result);
