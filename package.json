@@ -10,6 +10,7 @@
   "license": "ISC",
   "dependencies": {
     "bluebird": "^3.5.0",
+    "compromise": "^8.2.0",
     "tumblr.js": "^1.1.1"
   }
 }
