@@ -9,11 +9,6 @@ const client = new tumblr.createClient({
   returnPromises: true,
 })
 
-// client.blogPosts('badkidsjokes.tumblr.com', {offset: 20})
-// .then(console.log.bind(console))
-// .catch(console.error)
-
-
 client.blogPosts('badkidsjokes.tumblr.com')
   .then(results => {
     return results.total_posts
@@ -30,12 +25,14 @@ client.blogPosts('badkidsjokes.tumblr.com')
     return Promise.all(promises)
   })
   .then(resultsArray => {
-    let completeResult = resultsArray.map(entry => {
-      return entry.posts.reduce((accum, curr) => {
-            return `${curr.body}\n\n\n${accum}`
-        })
+    let counter = 0
+    let completeResult = {}
+    resultsArray.forEach(entry => {
+      entry.posts.forEach(post => {
+        completeResult[counter++] = post.body
       })
-    return writeFile('badjokes.txt', completeResult)
+    })
+    return writeFile('badjokes.json', JSON.stringify(completeResult), 'utf8')
   })
   .then(() => {
     console.log('successfullly written!')
