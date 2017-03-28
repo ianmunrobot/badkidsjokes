@@ -25,14 +25,21 @@ client.blogPosts('badkidsjokes.tumblr.com')
     return Promise.all(promises)
   })
   .then(resultsArray => {
-    let counter = 0
-    let completeResult = {}
+    let completeResult = {jokes: []}
     resultsArray.forEach(entry => {
       entry.posts.forEach(post => {
-        completeResult[counter++] = post.body
+        let normalized = post.body
+          .split(/(<\/[\s\S]+?>)|\n/g)
+          .filter(element => element)
+          .map(element => {
+            return element
+              .replace(/<[/]*[\s\S]+?>/g, '')
+          })
+          .filter(element => element !== '')
+        completeResult.jokes.push(...normalized)
       })
     })
-    return writeFile('badjokes.json', JSON.stringify(completeResult), 'utf8')
+    return writeFile('badjokesSentences.json', JSON.stringify(completeResult), 'utf8')
   })
   .then(() => {
     console.log('successfullly written!')
